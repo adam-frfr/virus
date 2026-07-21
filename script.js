@@ -279,7 +279,6 @@
         if (giftBox) {
             giftBox.addEventListener('click', () => {
                 if (giftBox.classList.contains('opened')) return;
-                giftBox.classList.add('shake');
                 
                 const giftImg = document.getElementById('giftBoxImg');
                 if (giftImg) {

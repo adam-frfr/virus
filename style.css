@@ -774,10 +774,10 @@
 
         #giftScene .gift-box-img {
             position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            inset: -25%;
+            width: 150%;
+            height: 150%;
+            object-fit: cover;
             transition: opacity 0.5s ease, transform 0.5s ease;
             z-index: 2;
         }
