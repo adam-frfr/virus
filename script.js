@@ -280,6 +280,12 @@
             giftBox.addEventListener('click', () => {
                 if (giftBox.classList.contains('opened')) return;
                 giftBox.classList.add('shake');
+                
+                const giftImg = document.getElementById('giftBoxImg');
+                if (giftImg) {
+                    giftImg.src = 'bowebp.webp';
+                }
+
                 setTimeout(() => {
                     giftBox.classList.add('opened');
                     if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
