@@ -296,7 +296,7 @@
 
         function createPetalBurst() {
             const container = document.getElementById('giftScene');
-            const numConfetti = 40;
+            const numConfetti = 120;
             const colors = ['#C81E4B', '#F3C4D2', '#FFF3EC', '#A981C6'];
             
             for (let i = 0; i < numConfetti; i++) {
@@ -304,7 +304,7 @@
                 petal.className = 'burst-petal';
                 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 200 + 100;
+                const distance = Math.random() * 300 + 150;
                 const tx = Math.cos(angle) * distance;
                 const ty = Math.sin(angle) * distance - 50; // Bias slightly upwards
                 
