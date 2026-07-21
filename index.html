@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Garden for You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Jost:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= LOADING SCREEN ================= -->
+    <div id="loadingScreen">
+        <canvas id="loaderCanvas" width="80" height="80"></canvas>
+    </div>
+
+    <!-- ================= PASSWORD OVERLAY ================= -->
+    <div id="passwordOverlay">
+        <div class="fingerprint-container">
+            <div class="fingerprint-hint">touch to unlock</div>
+            <canvas id="fingerprintCanvas" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+    <canvas id="petalCanvas"></canvas>
+
+    <!-- ================= GARDEN ================= -->
+    <div id="garden">
+        <svg class="hidden-svg">
+            <defs>
+                <radialGradient id="bloomGrad">
+                    <stop offset="0%" stop-color="white" stop-opacity="1" />
+                    <stop offset="100%" stop-color="white" stop-opacity="0" />
+                </radialGradient>
+                <mask id="bloomMask" maskContentUnits="objectBoundingBox">
+                    <rect x="0" y="0" width="1" height="1" fill="url(#bloomGrad)" />
+                </mask>
+            </defs>
+        </svg>
+        <div class="stars" id="stars"></div>
+        <svg class="hill" viewBox="0 0 1000 300" preserveAspectRatio="none">
+            <path d="M0,120 C150,60 320,150 500,100 C680,50 850,140 1000,90 L1000,300 L0,300 Z"
+                fill="rgba(110, 70, 160, 0.45)" />
+            <path d="M0,180 C180,140 350,210 550,160 C720,120 880,190 1000,150 L1000,300 L0,300 Z"
+                fill="rgba(75, 40, 120, 0.65)" />
+        </svg>
+
+        <div class="butterfly-container butterfly-1">
+            <img src="butterfly.webp" alt="butterfly">
+        </div>
+        <div class="butterfly-container butterfly-2">
+            <img src="butterfly.webp" alt="butterfly">
+        </div>
+
+        <div class="garden-title">
+            <h1>a garden, for you</h1>
+            <div class="sub">touch a flower to open it</div>
+        </div>
+
+        <div class="garden-bed">
+
+            <button type="button" class="flower flower-1" data-page="page-poem" aria-label="Open poem">
+                <span class="flower-hit">
+                    <span class="bloom-label">a poem</span>
+                    <canvas class="flower-canvas" data-color="var(--rose)" width="200" height="200"></canvas>
+                </span>
+            </button>
+
+            <button type="button" class="flower flower-2" data-page="page-qualities" aria-label="Open why we love you">
+                <span class="flower-hit">
+                    <span class="bloom-label">why we love you</span>
+                    <canvas class="flower-canvas" data-color="var(--rose)" width="200" height="200"></canvas>
+                </span>
+            </button>
+
+            <button type="button" class="flower flower-3" data-page="page-wish" aria-label="Open make a wish">
+                <span class="flower-hit">
+                    <span class="bloom-label">make a wish</span>
+                    <canvas class="flower-canvas" data-color="var(--blush)" width="200" height="200"></canvas>
+                </span>
+            </button>
+
+            <button type="button" class="flower flower-4" data-page="page-sky" aria-label="Open a sky for you">
+                <span class="flower-hit">
+                    <span class="bloom-label">a sky for you</span>
+                    <canvas class="flower-canvas" data-color="var(--blush)" width="200" height="200"></canvas>
+                </span>
+            </button>
+
+            <button type="button" class="flower flower-5" data-page="page-letter" aria-label="Open letter">
+                <span class="flower-hit">
+                    <span class="bloom-label">for always</span>
+                    <canvas class="flower-canvas" data-color="var(--rose)" width="200" height="200"></canvas>
+                </span>
+            </button>
+
+        </div>
+
+        <button type="button" id="portal" aria-label="Open surprise"></button>
+
+        <div class="instruction">a small garden of things I wanted to say</div>
+    </div>
+
+    <!-- ================= GIFT SCENE ================= -->
+    <div id="giftScene">
+        <!-- <div class="eyebrow">a final surprise</div> (removed) -->
+        <div class="gift-container">
+            <button type="button" class="gift-box-wrapper" id="giftBox" aria-label="Open gift">
+                <span class="vertical-ribbon"></span>
+                <span class="gift-box"></span>
+                <span class="bouquet-scene">
+                    <img src="wrapper.webp" alt="Wrapper Back" class="wrapper-back">
+                    <img src="violet_boquett.webp" alt="Violet Bouquet" class="bouquet-img">
+                    <img src="wrapper.webp" alt="Wrapper Front" class="wrapper-front">
+                </span>
+            </button>
+        </div>
+
+        <button type="button" class="back-btn" id="giftBackBtn" aria-label="Back to garden">
+            <span class="leaf-ico"></span>
+        </button>
+    </div>
+
+    <div id="pageBackdrop" class="page-backdrop"></div>
+    <button type="button" class="back-btn" id="globalBackBtn" aria-label="Close page"><span
+            class="leaf-ico"></span></button>
+
+    <!-- ================= PAGE : POEM ================= -->
+    <div class="page" id="page-poem" style="--accent:var(--rose);">
+        <div class="page-glow"></div>
+
+        <div class="page-inner">
+            <div class="eyebrow">a poem</div>
+            <div class="divider"></div>
+            <p class="poem">
+                Some people walk into a room<br>
+                and the lights simply <span class="hl">stay dim</span> around them.<br>
+                You walk in, <span class="hl">and everything warms.</span><br><br>
+                Today the calendar just gives us<br>
+                an excuse to say it out loud —<br>
+                the world is <span class="hl">better lit</span> with you in it.
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: QUALITIES ================= -->
+    <div class="page" id="page-qualities" style="--accent:var(--rose);">
+        <div class="page-glow"></div>
+
+        <div class="page-inner">
+            <div class="eyebrow">why we love you</div>
+            <div class="cards">
+                <div class="card"><span class="mark">warmth</span>
+                    <p>You make people feel like the most interesting person in the room — even when you're the one who
+                        is.</p>
+                </div>
+                <div class="card"><span class="mark">laughter</span>
+                    <p>Your laugh is the kind that gets borrowed by everyone standing near it.</p>
+                </div>
+                <div class="card"><span class="mark">curiosity</span>
+                    <p>You ask the questions that turn small talk into real conversation.</p>
+                </div>
+                <div class="card"><span class="mark">loyalty</span>
+                    <p>You remember the small things, show up for the big ones, and never make anyone ask twice.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: WISH / CANDLES ================= -->
+    <div class="page" id="page-wish" style="--accent:var(--blush);">
+        <div class="page-glow"></div>
+
+        <div class="page-inner">
+            <div class="eyebrow">make a wish</div>
+            <div class="hint">light every candle</div>
+            <div class="candle-row" id="candleRow"></div>
+            <p class="cake-msg" id="cakeMsg">happy birthday. may this year hold everything you're quietly hoping for.
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: SKY / CONSTELLATION ================= -->
+    <div class="page" id="page-sky" style="--accent:var(--blush);">
+        <div class="page-glow"></div>
+
+        <div class="page-inner">
+            <div class="eyebrow">a sky, just for you</div>
+            <div class="sky">
+                <svg viewBox="0 0 520 340">
+                    <circle class="star-pt" data-i="0" cx="70" cy="270" r="5" role="button" tabindex="0" aria-label="Star 1"></circle>
+                    <circle class="star-pt" data-i="1" cx="140" cy="160" r="5" role="button" tabindex="0" aria-label="Star 2"></circle>
+                    <circle class="star-pt" data-i="2" cx="240" cy="80" r="5" role="button" tabindex="0" aria-label="Star 3"></circle>
+                    <circle class="star-pt" data-i="3" cx="340" cy="130" r="5" role="button" tabindex="0" aria-label="Star 4"></circle>
+                    <circle class="star-pt" data-i="4" cx="410" cy="240" r="5" role="button" tabindex="0" aria-label="Star 5"></circle>
+                    <circle class="star-pt" data-i="5" cx="300" cy="270" r="5" role="button" tabindex="0" aria-label="Star 6"></circle>
+                </svg>
+            </div>
+            <div class="hint" id="skyHint">tap each star, in any order</div>
+            <p class="wish-msg" id="wishMsg">you are the brightest thing in every room you enter — and every sky that
+                gets to hold you.</p>
+        </div>
+    </div>
+
+    <!-- ================= PAGE: LETTER ================= -->
+    <div class="page" id="page-letter" style="--accent:var(--rose);">
+        <div class="page-glow"></div>
+        <div class="page-inner">
+            <div class="eyebrow">for always</div>
+            <div class="divider"></div>
+            <div class="letter">
+                <p>However far this year takes you, I hope it keeps bringing you back to people who see you clearly and
+                    love you loudly. Thank you for being the friend who makes ordinary days feel like occasions.</p>
+                <p>Happy birthday. Here's to you — always.</p>
+                <div class="signature">with love, always</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js" defer></script>
+
+    <img src="flower_animation.webp" alt="Violet flower animated border left" class="flower-border-corner-left">
+    <img src="flower_animation.webp" alt="Violet flower animated border right" class="flower-border-corner">
+</body>
+
+</html>
