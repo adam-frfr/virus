@@ -258,12 +258,11 @@
 
         if (portalEl) {
             portalEl.addEventListener('click', () => {
-                portalEl.classList.add('zoom-in');
+                portalEl.classList.add('pull-effect');
                 setTimeout(() => {
                     document.getElementById('garden').style.display = 'none';
                     document.getElementById('giftScene').classList.add('active');
-                    portalEl.style.display = 'none';
-                }, 2800);
+                }, 1000);
             });
         }
 
@@ -272,8 +271,7 @@
             giftBackBtn.addEventListener('click', () => {
                 document.getElementById('giftScene').classList.remove('active');
                 document.getElementById('garden').style.display = '';
-                portalEl.classList.remove('zoom-in');
-                portalEl.style.display = '';
+                portalEl.classList.remove('pull-effect');
             });
         }
 
@@ -290,8 +288,38 @@
                 setTimeout(() => {
                     giftBox.classList.add('opened');
                     if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                    
+                    setTimeout(createPetalBurst, 800);
                 }, 3000);
             });
+        }
+
+        function createPetalBurst() {
+            const container = document.getElementById('giftScene');
+            const numConfetti = 40;
+            const colors = ['#C81E4B', '#F3C4D2', '#FFF3EC', '#A981C6'];
+            
+            for (let i = 0; i < numConfetti; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'burst-petal';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 200 + 100;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 50; // Bias slightly upwards
+                
+                petal.style.setProperty('--tx', `${tx}px`);
+                petal.style.setProperty('--ty', `${ty}px`);
+                petal.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const size = Math.random() * 8 + 6;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size * 1.2}px`;
+                petal.style.animationDelay = `${Math.random() * 0.1}s`;
+                
+                container.appendChild(petal);
+                setTimeout(() => petal.remove(), 2000);
+            }
         }
 
 

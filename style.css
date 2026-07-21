@@ -693,136 +693,45 @@
         }
 
         /* ============ PORTAL & GIFT BOX ============ */
-        /* ============ CINEMATIC PORTAL ============ */
-        .magic-portal {
+        #portal {
             position: absolute;
             top: 35%;
             left: 50%;
-            transform: translate3d(-50%, -50%, 0) scale(0);
-            width: 450px;
-            height: 450px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 1s ease, transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%) scale(0);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 243, 236, 0.9) 0%, rgba(200, 30, 75, 0.6) 40%, rgba(74, 14, 36, 0.2) 70%, transparent 100%);
+            box-shadow: 0 0 40px var(--rose), inset 0 0 20px var(--cream);
             z-index: 5;
-            will-change: transform;
-            backface-visibility: hidden;
+            cursor: pointer;
             opacity: 0;
             pointer-events: none;
-            background: transparent;
-            border: none;
-            padding: 0;
-            outline: none;
+            transition: opacity 1s ease, transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulsePortal 3s infinite alternate;
         }
 
-        .magic-portal.visible {
+        #portal.visible {
             opacity: 1;
-            transform: translate3d(-50%, -50%, 0) scale(0.4);
+            transform: translate(-50%, -50%) scale(1);
             pointer-events: auto;
         }
 
-        @media (min-width: 768px) {
-            .magic-portal.visible {
-                transform: translate3d(-50%, -50%, 0) scale(0.6);
-            }
-        }
-
-        .magic-portal:hover {
-            transform: translate3d(-50%, -50%, 0) scale(0.45);
-        }
-        @media (min-width: 768px) {
-            .magic-portal:hover {
-                transform: translate3d(-50%, -50%, 0) scale(0.65);
-            }
-        }
-
-        .magic-portal.zoom-in {
-            transition: transform 3s cubic-bezier(0.65, 0, 0.35, 1);
-            transform: translate3d(-50%, -50%, 0) scale(50) !important;
-            pointer-events: none;
-        }
-
-        .white-mask {
-            position: absolute;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            border: 3000px solid var(--cream);
-            box-sizing: content-box;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            background: transparent;
-        }
-
-        .fiery-core {
-            position: absolute;
-            width: 390px;
-            height: 390px;
-            border-radius: 50%;
-            box-shadow: 
-                0 0 50px 20px rgba(255, 100, 0, 0.5),
-                inset 0 0 40px 10px rgba(255, 50, 0, 0.6);
-            background: transparent;
-            animation: pulsePortal 2s ease-in-out infinite alternate;
-            z-index: 4;
-        }
-
-        .sparks {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.9;
-        }
-
-        .spark-1 {
-            width: 410px;
-            height: 410px;
-            border: 8px dotted #ffb700;
-            animation: spinPortal 8s linear infinite;
-            z-index: 10;
-        }
-
-        .spark-2 {
-            width: 380px;
-            height: 380px;
-            border: 12px dashed #ff5500;
-            animation: spinPortalReverse 5s linear infinite;
-            z-index: 11;
-        }
-
-        .spark-3 {
-            width: 430px;
-            height: 430px;
-            border: 4px dotted #ffe600;
-            animation: spinPortal 3s linear infinite;
-            z-index: 12;
-        }
-
-        .spark-4 {
-            width: 390px;
-            height: 390px;
-            border: 6px dashed #ff8800;
-            animation: spinPortalReverse 7s linear infinite;
-            opacity: 0.7;
-            z-index: 13;
-        }
-
-        @keyframes spinPortal {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes spinPortalReverse {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
+        #portal.pull-effect {
+            animation: none;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+            transform: translate(-50%, -50%) scale(30);
+            opacity: 0;
         }
 
         @keyframes pulsePortal {
-            0% { transform: scale(0.98); filter: brightness(0.9); }
-            100% { transform: scale(1.02); filter: brightness(1.2); }
+            from {
+                box-shadow: 0 0 20px var(--rose), inset 0 0 10px var(--cream);
+            }
+
+            to {
+                box-shadow: 0 0 50px var(--rose), inset 0 0 30px var(--cream);
+            }
         }
 
         /* ============ GIFT SCENE ============ */
@@ -941,6 +850,29 @@
             100% {
                 opacity: 1;
                 transform: scale(1) translateY(0) rotate(0);
+            }
+        }
+
+        .burst-petal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50% 0 50% 0;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0) rotate(0deg);
+            animation: burstAnim 1.5s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        @keyframes burstAnim {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 150px)) scale(0.5) rotate(720deg);
             }
         }
 
