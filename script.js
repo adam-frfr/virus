@@ -283,13 +283,13 @@
                 
                 const giftImg = document.getElementById('giftBoxImg');
                 if (giftImg) {
-                    giftImg.src = 'bowebp.webp';
+                    giftImg.src = 'bowww_animation.webp';
                 }
 
                 setTimeout(() => {
                     giftBox.classList.add('opened');
                     if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-                }, 500);
+                }, 3000);
             });
         }
 
