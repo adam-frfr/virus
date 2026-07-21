@@ -717,11 +717,14 @@
             pointer-events: auto;
         }
 
-        #portal.pull-effect {
-            animation: none;
-            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
-            transform: translate(-50%, -50%) scale(30);
-            opacity: 0;
+        #portal.portal-press {
+            animation: portalPressAnim 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes portalPressAnim {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0; }
         }
 
         @keyframes pulsePortal {
@@ -741,7 +744,9 @@
             background: url('violet_background.webp') center/cover no-repeat;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1s ease;
+            clip-path: circle(0px at var(--click-x, 50%) var(--click-y, 50%));
+            transition: clip-path 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease-out;
+            will-change: clip-path, opacity;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -751,6 +756,7 @@
 
         #giftScene.active {
             opacity: 1;
+            clip-path: circle(150% at var(--click-x, 50%) var(--click-y, 50%));
             pointer-events: auto;
         }
 

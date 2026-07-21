@@ -257,12 +257,16 @@
         }
 
         if (portalEl) {
-            portalEl.addEventListener('click', () => {
-                portalEl.classList.add('pull-effect');
+            portalEl.addEventListener('click', (e) => {
+                portalEl.classList.add('portal-press');
+                const giftScene = document.getElementById('giftScene');
+                
+                giftScene.style.setProperty('--click-x', `${e.clientX}px`);
+                giftScene.style.setProperty('--click-y', `${e.clientY}px`);
+                
                 setTimeout(() => {
-                    document.getElementById('garden').style.display = 'none';
-                    document.getElementById('giftScene').classList.add('active');
-                }, 1000);
+                    giftScene.classList.add('active');
+                }, 150);
             });
         }
 
@@ -270,8 +274,7 @@
         if (giftBackBtn) {
             giftBackBtn.addEventListener('click', () => {
                 document.getElementById('giftScene').classList.remove('active');
-                document.getElementById('garden').style.display = '';
-                portalEl.classList.remove('pull-effect');
+                portalEl.classList.remove('portal-press');
             });
         }
 
