@@ -3,33 +3,7 @@
         document.body.addEventListener('touchstart', () => { }, { passive: true });
 
         // ---------- parallax ----------
-        function updateParallax(mx, my) {
-            document.getElementById('garden').style.setProperty('--mx', mx);
-            document.getElementById('garden').style.setProperty('--my', my);
-        }
-
-        
-let mouseMoveTicking = false;
-document.addEventListener('mousemove', e => {
-    if (!mouseMoveTicking) {
-        window.requestAnimationFrame(() => {
-
-            const mx = (e.clientX / window.innerWidth) - 0.5;
-            const my = (e.clientY / window.innerHeight) - 0.5;
-            updateParallax(mx, my);
-        
-            mouseMoveTicking = false;
-        });
-        mouseMoveTicking = true;
-    }
-});
-
-        window.addEventListener('deviceorientation', e => {
-            if (e.gamma === null || e.beta === null) return;
-            const mx = Math.max(-0.5, Math.min(0.5, e.gamma / 60));
-            const my = Math.max(-0.5, Math.min(0.5, (e.beta - 45) / 60));
-            updateParallax(mx, my);
-        });
+        // Dynamic gyroscope and mouse parallax features have been removed.
 
         // ---------- kinetic typography parser ----------
         function wrapWords(el) {
@@ -81,7 +55,6 @@ document.addEventListener('mousemove', e => {
         let physicsShift = 0;
         let targetPhysicsLag = 0;
         let targetPhysicsShift = 0;
-        let tiltGamma = 0;
 
         document.querySelectorAll('.page').forEach(page => {
             page.addEventListener('scroll', () => {
@@ -112,18 +85,13 @@ document.addEventListener('mousemove', e => {
             });
         });
 
-        window.addEventListener('deviceorientation', e => {
-            if (e.gamma !== null) {
-                tiltGamma = e.gamma;
-            }
-        });
+
 
         function physicsLoop() {
             targetPhysicsLag *= 0.9;
             targetPhysicsShift *= 0.9;
 
-            const gyroTargetLag = Math.max(-10, Math.min(10, tiltGamma * 0.2));
-            const combinedLag = targetPhysicsLag + gyroTargetLag;
+            const combinedLag = targetPhysicsLag;
 
             physicsLag += (combinedLag - physicsLag) * 0.15;
             physicsShift += (targetPhysicsShift - physicsShift) * 0.15;
