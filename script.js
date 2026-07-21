@@ -134,30 +134,34 @@
         document.querySelectorAll('.petals').forEach(buildPetals);
 
         // ---------- flower canvas sequences ----------
-        const preloadedFlowerFrames = [];
-        let framesLoadedCount = 0;
+        const flowerSpritesheet = new Image();
+        let flowerSpritesheetLoaded = false;
         const totalFlowerFrames = 51;
-
-        for (let i = 1; i <= totalFlowerFrames; i++) {
-            const img = new Image();
-            const paddedNum = i.toString().padStart(3, '0');
-            img.src = 'bg removed flower/ezgif-frame-' + paddedNum + '.webp';
-            img.onload = () => framesLoadedCount++;
-            preloadedFlowerFrames.push(img);
-        }
+        
+        flowerSpritesheet.onload = () => {
+            flowerSpritesheetLoaded = true;
+        };
+        flowerSpritesheet.src = 'flower_spritesheet.webp';
 
         // ---------- loader canvas sequences & logic ----------
-        const preloadedLoaderFrames = [];
-        let loaderFramesLoadedCount = 0;
+        const loaderSpritesheet = new Image();
+        let loaderSpritesheetLoaded = false;
         const totalLoaderFrames = 51;
+        
+        loaderSpritesheet.onload = () => {
+            loaderSpritesheetLoaded = true;
+        };
+        loaderSpritesheet.src = 'loader_spritesheet.webp';
 
-        for (let i = 1; i <= totalLoaderFrames; i++) {
-            const img = new Image();
-            const paddedNum = i.toString().padStart(3, '0');
-            img.src = 'butterfly loading/ezgif-frame-' + paddedNum + '.webp';
-            img.onload = () => loaderFramesLoadedCount++;
-            preloadedLoaderFrames.push(img);
-        }
+        // ---------- bowww canvas sequences & logic ----------
+        const bowwwSpritesheet = new Image();
+        let bowwwSpritesheetLoaded = false;
+        const totalBowwwFrames = 61;
+        
+        bowwwSpritesheet.onload = () => {
+            bowwwSpritesheetLoaded = true;
+        };
+        bowwwSpritesheet.src = 'bowww_spritesheet.webp';
 
         const loadingScreen = document.getElementById('loadingScreen');
         const loaderCanvas = document.getElementById('loaderCanvas');
@@ -179,21 +183,24 @@
         function drawLoaderLoop(time) {
             // throttle drawing to around 30fps for natural flutter
             if (time - lastLoaderDrawTime > 30) {
-                if (loaderCtx && preloadedLoaderFrames[loaderFrameIndex] && preloadedLoaderFrames[loaderFrameIndex].complete) {
+                if (loaderCtx && loaderSpritesheetLoaded) {
                     loaderCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
-                    loaderCtx.drawImage(preloadedLoaderFrames[loaderFrameIndex], 0, 0, loaderCanvas.width, loaderCanvas.height);
+                    const sx = (loaderFrameIndex % 10) * 160;
+                    const sy = Math.floor(loaderFrameIndex / 10) * 160;
+                    loaderCtx.drawImage(loaderSpritesheet, sx, sy, 160, 160, 0, 0, loaderCanvas.width, loaderCanvas.height);
                 }
                 loaderFrameIndex = (loaderFrameIndex + 1) % totalLoaderFrames;
                 lastLoaderDrawTime = time;
             }
 
             // Check if all assets loaded
-            const allFlowersLoaded = framesLoadedCount === totalFlowerFrames;
-            const allLoaderFramesLoaded = loaderFramesLoadedCount === totalLoaderFrames;
+            const allFlowersLoaded = flowerSpritesheetLoaded;
+            const allLoaderFramesLoaded = loaderSpritesheetLoaded;
+            const allBowwwLoaded = bowwwSpritesheetLoaded;
             const allStaticAssetsLoaded = staticAssetsLoaded === staticAssets.length;
             const minTimeElapsed = Date.now() - loadingStartTime >= 1200;
 
-            if (allFlowersLoaded && allLoaderFramesLoaded && allStaticAssetsLoaded && minTimeElapsed) {
+            if (allFlowersLoaded && allLoaderFramesLoaded && allBowwwLoaded && allStaticAssetsLoaded && minTimeElapsed) {
                 loadingScreen.classList.add('fade-out');
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
@@ -210,24 +217,11 @@
         function drawFlowerFrame(canvas, frameIndex) {
             const ctx = canvas.getContext('2d', { alpha: true });
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const img = preloadedFlowerFrames[frameIndex];
-            if (!img || !img.complete) return;
-
-            const canvasRatio = canvas.width / canvas.height;
-            const imgRatio = img.width / img.height;
-            let drawWidth, drawHeight, x, y;
-            if (canvasRatio > imgRatio) {
-                drawHeight = canvas.height;
-                drawWidth = img.width * (canvas.height / img.height);
-                x = (canvas.width - drawWidth) / 2;
-                y = 0;
-            } else {
-                drawWidth = canvas.width;
-                drawHeight = img.height * (canvas.width / img.width);
-                x = 0;
-                y = (canvas.height - drawHeight) / 2;
-            }
-            ctx.drawImage(img, x, y, drawWidth, drawHeight);
+            if (!flowerSpritesheetLoaded) return;
+            
+            const sx = (frameIndex % 10) * 400;
+            const sy = Math.floor(frameIndex / 10) * 400;
+            ctx.drawImage(flowerSpritesheet, sx, sy, 400, 400, 0, 0, canvas.width, canvas.height);
         }
 
         // initial draw
@@ -280,20 +274,47 @@
 
         const giftBox = document.getElementById('giftBox');
         if (giftBox) {
+            // Initial draw for static bow frame 0
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const giftCanvas = document.getElementById('giftBoxCanvas');
+                    const ctx = giftCanvas ? giftCanvas.getContext('2d') : null;
+                    if (ctx && bowwwSpritesheetLoaded) {
+                        ctx.drawImage(bowwwSpritesheet, 0, 0, 640, 360, 0, 0, giftCanvas.width, giftCanvas.height);
+                    }
+                }, 500);
+            });
+
             giftBox.addEventListener('click', () => {
                 if (giftBox.classList.contains('opened')) return;
                 
-                const giftImg = document.getElementById('giftBoxImg');
-                if (giftImg) {
-                    giftImg.src = 'bowww_animation.webp';
-                }
-
-                setTimeout(() => {
-                    giftBox.classList.add('opened');
-                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                const giftCanvas = document.getElementById('giftBoxCanvas');
+                const ctx = giftCanvas ? giftCanvas.getContext('2d') : null;
+                
+                if (ctx && bowwwSpritesheetLoaded) {
+                    let bowFrame = 0;
+                    let lastTime = 0;
                     
-                    setTimeout(createPetalBurst, 800);
-                }, 3000);
+                    function animateBow(time) {
+                        if (time - lastTime > 40) { // ~25 fps
+                            ctx.clearRect(0, 0, giftCanvas.width, giftCanvas.height);
+                            const sx = (bowFrame % 10) * 640;
+                            const sy = Math.floor(bowFrame / 10) * 360;
+                            ctx.drawImage(bowwwSpritesheet, sx, sy, 640, 360, 0, 0, giftCanvas.width, giftCanvas.height);
+                            
+                            if (bowFrame === totalBowwwFrames - 1) {
+                                giftBox.classList.add('opened');
+                                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+                                setTimeout(createPetalBurst, 100);
+                                return; // Stop animation loop
+                            }
+                            bowFrame++;
+                            lastTime = time;
+                        }
+                        requestAnimationFrame(animateBow);
+                    }
+                    requestAnimationFrame(animateBow);
+                }
             });
         }
 
@@ -791,17 +812,14 @@ window.addEventListener('pointermove', e => {
             // also simulate portal unlocked if all flowers were clicked
             // Though maybe we just let them click flowers again, or they can just enjoy the garden.
         }
-        const preloadedFingerprintFrames = [];
-        let fingerprintFramesLoaded = 0;
+        const fingerprintSpritesheet = new Image();
+        let fingerprintSpritesheetLoaded = false;
         const totalFingerprintFrames = 101;
-
-        for (let i = 1; i <= totalFingerprintFrames; i++) {
-            const img = new Image();
-            const paddedNum = i.toString().padStart(3, '0');
-            img.src = 'fingerprint/ezgif-frame-' + paddedNum + '.webp';
-            img.onload = () => fingerprintFramesLoaded++;
-            preloadedFingerprintFrames.push(img);
-        }
+        
+        fingerprintSpritesheet.onload = () => {
+            fingerprintSpritesheetLoaded = true;
+        };
+        fingerprintSpritesheet.src = 'fingerprint_spritesheet.webp';
 
         const fpCanvas = document.getElementById('fingerprintCanvas');
         let fpCurrentFrame = 0;
@@ -812,16 +830,22 @@ window.addEventListener('pointermove', e => {
             if (!fpCanvas) return;
             const ctx = fpCanvas.getContext('2d', { alpha: true });
             ctx.clearRect(0, 0, fpCanvas.width, fpCanvas.height);
-            const img = preloadedFingerprintFrames[frameIndex];
-            if (!img || !img.complete) return;
+            if (!fingerprintSpritesheetLoaded) return;
+
+            // Spritesheet is 7680x12240 -> 6 cols of 1280x720 frames
+            const frameWidth = 1280;
+            const frameHeight = 720;
+            const sx = (frameIndex % 6) * frameWidth;
+            const sy = Math.floor(frameIndex / 6) * frameHeight;
 
             // Draw image maintaining aspect ratio or filling the canvas
-            const scale = Math.min(fpCanvas.width / img.width, fpCanvas.height / img.height);
-            const w = img.width * scale;
-            const h = img.height * scale;
-            const x = (fpCanvas.width - w) / 2;
-            const y = (fpCanvas.height - h) / 2;
-            ctx.drawImage(img, x, y, w, h);
+            const scale = Math.min(fpCanvas.width / frameWidth, fpCanvas.height / frameHeight);
+            const w = frameWidth * scale;
+            const h = frameHeight * scale;
+            const dx = (fpCanvas.width - w) / 2;
+            const dy = (fpCanvas.height - h) / 2;
+            
+            ctx.drawImage(fingerprintSpritesheet, sx, sy, frameWidth, frameHeight, dx, dy, w, h);
         }
 
         // Try to draw frame 0 after a short delay so images have time to load

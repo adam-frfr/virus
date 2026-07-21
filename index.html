@@ -8,11 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Jost:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Jost:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="bowww_static.webp" as="image">
-    <link rel="preload" href="bowww_animation.webp" as="image">
     <link rel="preload" href="wrapper.webp" as="image">
     <link rel="preload" href="violet_boquett.webp" as="image">
 </head>
@@ -115,7 +113,7 @@
     <div id="giftScene">
         <div class="gift-container">
             <button type="button" class="gift-box-wrapper" id="giftBox" aria-label="Open gift">
-                <img src="bowww_static.webp" alt="Gift Box" class="gift-box-img" id="giftBoxImg">
+                <canvas id="giftBoxCanvas" class="gift-box-img" width="640" height="360"></canvas>
                 <span class="bouquet-scene">
                     <img src="wrapper.webp" alt="Wrapper Back" class="wrapper-back">
                     <img src="violet_boquett.webp" alt="Violet Bouquet" class="bouquet-img">
