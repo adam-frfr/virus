@@ -848,13 +848,14 @@ window.addEventListener('pointermove', e => {
             window.addEventListener('touchend', stopFp);
         }
 
-        // Add scattered falling flowers
+        // Add scattered falling flowers tied to corner positions
         (function () {
             const numFlowers = 3;
+            const positions = [8, 88, 15]; // Matches left/right corners where corner flowers sit
             for (let i = 0; i < numFlowers; i++) {
                 let container = document.createElement('div');
                 container.className = 'falling-flower-container';
-                container.style.left = (Math.random() * 95) + 'vw';
+                container.style.left = positions[i] + 'vw';
                 container.style.animationDuration = (Math.random() * 12 + 10) + 's';
                 container.style.animationDelay = (Math.random() * 10) + 's';
                 container.style.width = (Math.random() * 40 + 40) + 'px';
