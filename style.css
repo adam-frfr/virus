@@ -794,12 +794,23 @@
             max-height: 100vh;
             object-fit: cover;
             transition: opacity 0.5s ease, transform 0.5s ease;
+            animation: idleSway 4s ease-in-out infinite;
             z-index: 2;
+        }
+
+        @keyframes idleSway {
+            0%, 100% { 
+                transform: translate(-50%, -50%) translateY(0px) scale(1);
+            }
+            50% { 
+                transform: translate(-50%, -50%) translateY(-8px) scale(1.02);
+            }
         }
 
         #giftScene .gift-box-wrapper.opened .gift-box-img {
             opacity: 0;
             transform: translate(-50%, -50%) scale(1.2);
+            animation: none;
         }
 
         #giftScene .bouquet-scene {
