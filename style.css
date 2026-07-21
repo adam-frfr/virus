@@ -764,19 +764,18 @@
             transition: transform 0.3s ease;
         }
 
-        #giftScene .gift-box-wrapper.shake {
-            animation: shakeGift 0.5s ease-in-out forwards;
-        }
-
         #giftScene .gift-box-wrapper.opened {
             pointer-events: none;
         }
 
         #giftScene .gift-box-img {
             position: absolute;
-            inset: -25%;
-            width: 150%;
-            height: 150%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: auto;
+            max-height: 100vh;
             object-fit: cover;
             transition: opacity 0.5s ease, transform 0.5s ease;
             z-index: 2;
@@ -784,7 +783,7 @@
 
         #giftScene .gift-box-wrapper.opened .gift-box-img {
             opacity: 0;
-            transform: scale(1.2);
+            transform: translate(-50%, -50%) scale(1.2);
         }
 
         #giftScene .bouquet-scene {
