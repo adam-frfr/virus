@@ -39,7 +39,9 @@
             position: fixed;
             inset: 0;
             z-index: 1;
-            background: url('violet_background.webp') center/cover no-repeat;
+            background: 
+                radial-gradient(circle at center, transparent 30%, rgba(15, 0, 35, 0.75) 120%),
+                url('violet_background.webp') center/cover no-repeat;
             transition: transform 1s ease, filter 1s ease;
             overflow: hidden;
         }
@@ -139,6 +141,20 @@
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             scale: 1.3;
             transform-origin: bottom center;
+        }
+
+        .flower::after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 18px;
+            background: radial-gradient(ellipse at center, rgba(20, 0, 40, 0.7) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.8;
         }
 
         .flower:active {
