@@ -258,11 +258,12 @@
 
         if (portalEl) {
             portalEl.addEventListener('click', () => {
-                portalEl.classList.add('pull-effect');
+                portalEl.classList.add('zoom-in');
                 setTimeout(() => {
                     document.getElementById('garden').style.display = 'none';
                     document.getElementById('giftScene').classList.add('active');
-                }, 1000);
+                    portalEl.style.display = 'none';
+                }, 2800);
             });
         }
 
@@ -271,7 +272,8 @@
             giftBackBtn.addEventListener('click', () => {
                 document.getElementById('giftScene').classList.remove('active');
                 document.getElementById('garden').style.display = '';
-                portalEl.classList.remove('pull-effect');
+                portalEl.classList.remove('zoom-in');
+                portalEl.style.display = '';
             });
         }
 
